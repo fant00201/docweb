@@ -1,0 +1,681 @@
+:root {
+    /* Light Theme (Default) */
+    --primary-color: #2672ff;
+    --primary-color-dark: #1a5cbf;
+    --text-color: #333333; /* Main text */
+    --text-color-light: #555555; /* Secondary text, subtitles */
+    --text-color-headings: #1a1a1a; /* Headings */
+    --border-color: #e0e0e0;
+    --background-color: #f7f8fa; /* Overall page background */
+    --sidebar-background: #ffffff;
+    --content-background: #ffffff;
+    --header-background: #ffffff;
+    --hover-background: #f0f4ff; /* For hovers on links/items */
+    --active-background: #e6efff; /* For active nav items */
+    --code-background: #f0f0f0; /* Background for code blocks/inline code */
+    --blockquote-background: #f9f9f9;
+    --blockquote-border-color: var(--border-color);
+    --loader-char-color: var(--primary-color);
+    --loader-background: var(--background-color);
+
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-size-base: 15px;
+    --line-height-base: 1.7;
+
+    --sidebar-width: 260px;
+    --sidebar-width-collapsed: 60px;
+    --header-height: 60px;
+}
+
+html[data-theme="dark"] {
+    --primary-color: #58a6ff; /* Lighter blue for dark mode */
+    --primary-color-dark: #388bfd;
+    --text-color: #c9d1d9; /* Light gray for main text */
+    --text-color-light: #8b949e; /* Lighter gray for secondary text */
+    --text-color-headings: #f0f6fc; /* Very light for headings */
+    --border-color: #30363d; /* Darker border */
+    --background-color: #0d1117; /* Very dark background */
+    --sidebar-background: #161b22; /* Darker sidebar */
+    --content-background: #161b22; /* Darker content area */
+    --header-background: #161b22; /* Darker header */
+    --hover-background: #1f242c; /* Darker hover */
+    --active-background: #2a3038; /* Darker active */
+    --code-background: #22272e;
+    --blockquote-background: #1c2128;
+    --blockquote-border-color: var(--border-color);
+    --loader-char-color: var(--primary-color);
+    --loader-background: var(--background-color);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--text-color);
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition for body */
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--primary-color-dark);
+}
+
+ul {
+    list-style: none;
+}
+
+header {
+    height: var(--header-height);
+    background-color: var(--header-background);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+header h1 {
+    font-size: 1.5rem;
+    color: var(--text-color-headings);
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+#toggle-sidebar-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-color-light);
+    cursor: pointer;
+    margin-right: 15px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+#toggle-sidebar-btn:hover {
+    color: var(--primary-color);
+}
+
+.page-wrapper {
+    display: flex;
+    flex-grow: 1;
+    padding-top: var(--header-height);
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-background);
+    border-right: 1px solid var(--border-color);
+    padding: 20px 0;
+    transition: width 0.3s ease-in-out, transform 0.3s ease-in-out, background-color 0.3s ease, border-color 0.3s ease;
+    overflow-y: auto;
+    height: calc(100vh - var(--header-height));
+    position: fixed;
+    left: 0;
+    top: var(--header-height);
+}
+
+.sidebar.collapsed {
+    width: 0;
+    padding: 20px 0;
+    overflow: hidden;
+    
+}
+
+.sidebar .sidebar-header {
+    padding: 0 20px 10px 20px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 10px;
+    transition: border-color 0.3s ease;
+}
+
+.sidebar .sidebar-header h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color-headings);
+    transition: color 0.3s ease;
+}
+
+.sidebar #document-list li a {
+    display: block;
+    padding: 10px 20px;
+    color: var(--text-color-light);
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-left: 3px solid transparent;
+    transition: background-color 0.3s ease, color 0.3s ease, border-left-color 0.3s ease;
+}
+
+.sidebar #document-list li a:hover {
+    background-color: var(--hover-background);
+    color: var(--primary-color);
+}
+
+.sidebar #document-list li a.active {
+    background-color: var(--active-background);
+    color: var(--primary-color);
+    font-weight: 500;
+    border-left-color: var(--primary-color);
+}
+
+.content {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: var(--content-background);
+    margin-left: var(--sidebar-width);
+    transition: margin-left 0.3s ease-in-out, background-color 0.3s ease;
+}
+
+.sidebar.collapsed + .content {
+    margin-left: 0;
+}
+
+.content h2 {
+    font-size: 1.8rem;
+    color: var(--text-color-headings);
+    margin-bottom: 20px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.content p {
+    margin-bottom: 15px;
+    color: var(--text-color-light);
+    transition: color 0.3s ease;
+}
+
+.animated-element {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+
+.animated-element.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    #toggle-sidebar-btn {
+        
+    }
+
+    .sidebar {
+        
+        position: fixed;
+        left: 0;
+        top: var(--header-height);
+        height: calc(100vh - var(--header-height));
+        z-index: 1001; 
+        transform: translateX(-100%); 
+        width: var(--sidebar-width); 
+    }
+
+    .sidebar.open { 
+        transform: translateX(0);
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+
+    .sidebar.collapsed { 
+        transform: translateX(-100%);
+        width: var(--sidebar-width); 
+    }
+
+    .content {
+        margin-left: 0 !important; 
+        padding: 20px;
+    }
+
+    
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.4);
+        z-index: 1000; 
+    }
+    .overlay.active {
+        display: block;
+    }
+}
+
+.content { 
+    
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--text-color-headings);
+        margin-top: 1.5em;
+        margin-bottom: 0.8em;
+        line-height: 1.3;
+        transition: color 0.3s ease;
+    }
+
+    h1 { font-size: 2rem; font-weight: 600; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3em; transition: border-color 0.3s ease, color 0.3s ease;}
+    h2 { font-size: 1.75rem; font-weight: 600; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3em; transition: border-color 0.3s ease, color 0.3s ease;}
+    h3 { font-size: 1.5rem; font-weight: 600; transition: color 0.3s ease; }
+    h4 { font-size: 1.25rem; font-weight: 600; transition: color 0.3s ease; }
+    h5 { font-size: 1.1rem; font-weight: 600; transition: color 0.3s ease; }
+    h6 { font-size: 1rem; font-weight: 600; color: var(--text-color-light); transition: color 0.3s ease; }
+
+    p {
+        margin-bottom: 1em;
+        color: var(--text-color-light);
+        line-height: var(--line-height-base);
+        transition: color 0.3s ease;
+    }
+
+    a {
+        color: var(--primary-color);
+        text-decoration: underline;
+        transition: color 0.3s ease;
+    }
+    a:hover {
+        color: var(--primary-color-dark);
+    }
+
+    ul, ol {
+        margin-bottom: 1em;
+        padding-left: 2em;
+    }
+    ul {
+        list-style-type: disc;
+    }
+    ol {
+        list-style-type: decimal;
+    }
+    li {
+        margin-bottom: 0.5em;
+    }
+
+    blockquote {
+        margin: 1.5em 0;
+        padding: 0.5em 1.5em;
+        border-left: 4px solid var(--blockquote-border-color);
+        background-color: var(--blockquote-background);
+        color: var(--text-color-light); /* Adjusted for better contrast in dark mode */
+        transition: background-color 0.3s ease, color 0.3s ease, border-left-color 0.3s ease;
+    }
+    blockquote p {
+        margin-bottom: 0.5em;
+    }
+
+    pre {
+        background-color: var(--code-background);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 1em;
+        overflow-x: auto;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        font-size: 0.9em;
+        line-height: 1.5;
+        margin-bottom: 1em;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    code { 
+        background-color: var(--code-background);
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        font-size: 0.9em;
+        color: var(--text-color); /* Ensure inline code text color adapts */
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    pre code { 
+        background-color: transparent;
+        padding: 0;
+        border-radius: 0;
+        color: inherit; /* Inherit color from pre for syntax highlighting */
+    }
+
+    hr {
+        border: 0;
+        border-top: 1px solid var(--border-color);
+        margin: 2em 0;
+        transition: border-top-color 0.3s ease;
+    }
+
+    table {
+        width: auto;
+        border-collapse: collapse;
+        margin-bottom: 1.5em;
+        font-size: 0.95em;
+    }
+    th, td {
+        border: 1px solid var(--border-color);
+        padding: 0.6em 0.8em;
+        text-align: left;
+        transition: border-color 0.3s ease;
+    }
+    th {
+        background-color: var(--hover-background); /* Use hover for header for subtle diff */
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+    thead th {
+        border-bottom-width: 2px;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin-bottom: 1em;
+    }
+}
+
+#loader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--loader-background); /* Use theme variable */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.7s ease-in-out, background-color 0.3s ease; /* Also transition background */
+    overflow: hidden;
+}
+
+#loader-wrapper.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loader-char {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 5rem;
+    color: var(--loader-char-color); /* Use theme variable */
+    position: absolute;
+    opacity: 0;
+    transform: scale(0.5);
+    animation-duration: 1.2s;
+    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+    animation-fill-mode: forwards;
+    transition: color 0.3s ease; /* Transition color for theme change */
+}
+
+.loader-char.char-q {
+    animation-name: animateCharQ;
+    animation-delay: 0s;
+}
+.loader-char.char-s {
+    animation-name: animateCharS;
+    animation-delay: 0.2s;
+}
+.loader-char.char-1 {
+    animation-name: animateChar1;
+    animation-delay: 0.4s;
+}
+.loader-char.char-6 {
+    animation-name: animateChar6;
+    animation-delay: 0.6s;
+}
+
+@keyframes animateCharQ {
+    0% { opacity: 0; transform: translate(-200px, -100px) scale(0.5) rotate(-90deg); }
+    70% { opacity: 1; transform: translate(-90px, 0) scale(1.2) rotate(0deg); }
+    100% { opacity: 1; transform: translate(-90px, 0) scale(1) rotate(0deg); }
+}
+
+@keyframes animateCharS {
+    0% { opacity: 0; transform: translate(200px, -100px) scale(0.5) rotate(90deg); }
+    70% { opacity: 1; transform: translate(-30px, 0) scale(1.2) rotate(0deg); }
+    100% { opacity: 1; transform: translate(-30px, 0) scale(1) rotate(0deg); }
+}
+
+@keyframes animateChar1 {
+    0% { opacity: 0; transform: translate(-200px, 100px) scale(0.5) rotate(90deg); }
+    70% { opacity: 1; transform: translate(30px, 0) scale(1.2) rotate(0deg); }
+    100% { opacity: 1; transform: translate(30px, 0) scale(1) rotate(0deg); }
+}
+
+@keyframes animateChar6 {
+    0% { opacity: 0; transform: translate(200px, 100px) scale(0.5) rotate(-90deg); }
+    70% { opacity: 1; transform: translate(90px, 0) scale(1.2) rotate(0deg); }
+    100% { opacity: 1; transform: translate(90px, 0) scale(1) rotate(0deg); }
+}
+#loader-wrapper:not(.hidden) .loader-char {
+}
+
+/* Theme Toggle Button Style (add this) */
+#theme-toggle-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-color-light);
+    font-size: 1rem; /* Adjust as needed */
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: auto; /* Pushes it to the right in the header */
+    transition: color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+}
+
+#theme-toggle-btn:hover {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    background-color: var(--hover-background);
+}
+
+/* Theme Transition Overlay Style */
+#theme-transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color); /* Will be set by JS to current theme's bg */
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9998; /* Below loader, above most content */
+    transition: opacity 0.3s ease-in-out;
+}
+
+#theme-transition-overlay.active {
+    opacity: 1;
+    pointer-events: auto; /* Block clicks during transition */
+}
+
+/* AI Chat Styles */
+#chat-controls {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex; /* Align items in chat-controls */
+    align-items: center; /* Vertically align items */
+}
+
+#new-chat-btn {
+    padding: 8px 15px;
+    background-color: var(--sidebar-background); /* Using a less prominent color */
+    color: var(--text-color-light);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-right: 10px; /* Add some space between button and selector */
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#new-chat-btn:hover {
+    background-color: var(--hover-background);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+#model-selector {
+    padding: 7px 10px; /* Slightly less padding than button to match height */
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--sidebar-background);
+    color: var(--text-color-light);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+#model-selector:hover {
+    border-color: var(--primary-color);
+}
+
+#model-selector:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--active-background);
+}
+
+
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - var(--header-height) - 80px); /* Adjust 80px based on content padding */
+    max-height: calc(100vh - var(--header-height) - 80px);
+    background-color: var(--content-background);
+}
+
+#chat-history {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color: var(--background-color); /* Slightly different from content for distinction */
+}
+
+/* New chat message styles with avatars, all left-aligned */
+.message-line {
+    display: flex;
+    align-items: flex-start; /* Align avatar top with text top */
+    margin-bottom: 15px;
+    text-align: left; /* Ensure all lines are left-aligned */
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-right: 12px;
+    flex-shrink: 0; /* Prevent avatar from shrinking */
+    color: #ffffff; /* Default avatar text color */
+}
+
+.user-avatar {
+    background-color: var(--primary-color);
+}
+
+.ai-avatar {
+    background-color: var(--text-color-light); /* A neutral color for AI avatar */
+}
+
+.message-content {
+    flex-grow: 1;
+    padding: 6px 10px; /* Add some padding to the text content area */
+    background-color: var(--hover-background); /* Slight background for the text block */
+    border-radius: 6px; /* Slight rounding for the text block */
+}
+
+.model-name-display {
+    display: block; /* Make it a block to sit above the message text */
+    font-size: 0.75rem;
+    color: var(--text-color-light);
+    margin-bottom: 4px;
+    font-style: italic;
+}
+
+.message-text {
+    margin: 0; /* Reset margin for p inside message-content */
+    padding: 0; /* Reset padding */
+    line-height: 1.5;
+    word-wrap: break-word;
+    color: var(--text-color); /* Ensure text color is consistent */
+}
+
+/* Remove old .user-message and .ai-message specific styles if they only handled alignment/bubbles */
+/* The classes .user-message-line and .ai-message-line are now on the parent .message-line div */
+/* We might not need .user-message and .ai-message on the <p> anymore, but let's clear them */
+#chat-history .user-message, 
+#chat-history .ai-message {
+    text-align: left !important; /* Override any previous alignment */
+    padding: 0 !important;
+    margin: 0 !important; /* Reset margins if they were used for alignment */
+    background-color: transparent !important; /* Ensure no bubble background */
+    max-width: 100% !important;
+}
+
+/* Special handling for the initial welcome message if it's still a raw <p class="ai-message"> */
+/* This will be fixed in script.js later, but as a fallback: */
+#chat-history > p.ai-message:first-child {
+    /* This rule is a temporary fallback. Ideally, the initial message also uses the new structure. */
+    /* For now, let it be styled by .ai-message if it's a direct child <p> */
+    /* We will update script.js to use the new structure for the initial message too. */
+    /* For now, let's ensure it's left aligned and has no bubble if it's a simple p */
+    background-color: transparent;
+    border-radius: 0;
+    padding: 4px 0;
+    text-align: left;
+}
+
+#chat-input-area {
+    display: flex;
+    padding: 10px 0; /* Add some padding to the input area itself */
+    border-top: 1px solid var(--border-color);
+}
+
+#chat-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-right: 10px;
+    font-size: 0.95rem;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+#chat-send-btn {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+}
+
+#chat-send-btn:hover {
+    background-color: var(--primary-color-dark);
+}
